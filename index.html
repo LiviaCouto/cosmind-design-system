@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmind — Design System v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* ── ACCENT: Verde Botânico ── */
+  --mint:#2EC4A0;
+  --mint-light:#7DE0CB;
+  --mint-pale:#E6F8F4;
+  --mint-dark:#1A8A70;
+
+  /* ── NEUTROS QUENTES ── */
+  --clay:#F7F3EE;
+  --clay-dark:#EDE6DB;
+  --white:#FFFFFF;
+  --ink:#1C1A17;
+  --ink-card:#27241F;
+  --ink-hover:#332F28;
+
+  /* ── TEXTOS ── */
+  --text-primary:#1C1A17;
+  --text-secondary:#5A5346;
+  --text-muted:#9B9084;
+  --text-mint:#1A8A70;
+
+  /* ── BORDAS ── */
+  --border-light:#E0D9D0;
+  --border-dark:rgba(255,255,255,0.09);
+
+  /* ── SEMÂNTICAS ── */
+  --safe:#2D7A52;     --safe-bg:#E4F4EC;     --safe-border:#A8DFC0;
+  --caution:#8A6A10;  --caution-bg:#FEF5DC;  --caution-border:#F5D87A;
+  --risk:#A03030;     --risk-bg:#FAEAEA;     --risk-border:#F0ABAB;
+  --info:#2455A0;     --info-bg:#EBF2FC;     --info-border:#A0BFED;
+
+  /* ── PONTUAÇÃO (exclusivo Cosmind) ── */
+  --score-safe:#2D7A52;
+  --score-caution:#B07010;
+  --score-risk:#A03030;
+
+  /* ── TIPOGRAFIA ── */
+  --font-serif:'DM Serif Display',Georgia,serif;
+  --font-sans:'DM Sans',system-ui,sans-serif;
+
+  /* ── RADIUS ── */
+  --r-sm:4px; --r-btn:10px; --r-card:14px; --r-card-lg:20px; --r-pill:9999px; --r-phone:36px;
+
+  /* ── MOTION ── */
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --ease-inout:cubic-bezier(0.4,0,0.2,1);
+  --dur-fast:100ms; --dur-base:200ms; --dur-slow:360ms;
+
+  /* ── SOMBRAS ── */
+  --shadow-sm:0 1px 4px rgba(28,26,23,0.06);
+  --shadow-md:0 4px 16px rgba(28,26,23,0.08);
+  --shadow-lg:0 16px 48px rgba(28,26,23,0.12);
+  --shadow-mint:0 4px 14px rgba(46,196,160,0.28);
+}
+
+[data-theme="dark"]{
+  --white:#201E1A;
+  --clay:#1C1A17;
+  --clay-dark:#27241F;
+  --text-primary:#F2EDE6;
+  --text-secondary:#9B9084;
+  --text-muted:#6B6358;
+  --border-light:rgba(255,255,255,0.09);
+  --mint-pale:#0d2e27;
+  --safe-bg:#071a0f; --risk-bg:#1a0808; --caution-bg:#1a1200; --info-bg:#081426;
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--clay);color:var(--text-primary);line-height:1.65;transition:background .2s,color .2s}
+
+/* ── NAV LATERAL ── */
+.ds-nav{position:fixed;top:0;left:0;width:224px;height:100vh;background:var(--ink);overflow-y:auto;z-index:100;padding:24px 0;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.07) transparent}
+.ds-nav-logo{padding:0 20px 22px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:14px}
+.ds-nav-logo-name{font-family:var(--font-serif);font-size:24px;font-weight:400;color:#fff;letter-spacing:-.01em;line-height:1.1}
+.ds-nav-logo-name span{color:var(--mint)}
+.ds-nav-logo-sub{font-size:10px;color:var(--mint);letter-spacing:.14em;text-transform:uppercase;margin-top:4px;font-weight:500}
+.ds-nav-section{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:16px 20px 6px}
+.ds-nav a{display:block;padding:7px 20px;font-size:12.5px;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;border-left:2px solid transparent;font-family:var(--font-sans)}
+.ds-nav a:hover{color:#fff;background:rgba(255,255,255,.04)}
+.ds-nav a.active{color:var(--mint);border-left-color:var(--mint);background:rgba(46,196,160,.08)}
+.ds-nav-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07);font-size:10px;color:rgba(255,255,255,.2)}
+
+/* ── LAYOUT ── */
+.ds-body{margin-left:224px;min-height:100vh}
+.page{max-width:920px;margin:0 auto;padding:48px 36px}
+.section{margin-bottom:80px;scroll-margin-top:24px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+
+/* ── DARK TOGGLE ── */
+.dark-toggle{position:fixed;top:20px;right:24px;z-index:200;background:var(--ink-card);border:1px solid rgba(255,255,255,.12);color:#fff;padding:8px 14px;border-radius:var(--r-pill);font-size:12px;font-family:var(--font-sans);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.dark-toggle:hover{background:var(--ink-hover)}
+
+/* ── HEADER ── */
+.ds-header{background:var(--ink);padding:48px;border-radius:var(--r-card-lg);margin-bottom:56px;position:relative;overflow:hidden}
+.ds-header::before{content:'';position:absolute;top:-80px;right:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(46,196,160,.14) 0%,transparent 68%);pointer-events:none}
+.ds-header::after{content:'';position:absolute;bottom:-40px;left:40px;width:220px;height:220px;background:radial-gradient(circle,rgba(46,196,160,.06) 0%,transparent 70%);pointer-events:none}
+.ds-header-label{font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);margin-bottom:12px}
+.ds-header-title{font-size:46px;font-weight:400;color:#fff;line-height:1.05;margin-bottom:8px;font-family:var(--font-serif)}
+.ds-header-title span{color:var(--mint)}
+.ds-header-sub{font-size:15px;color:rgba(255,255,255,.5);max-width:540px;line-height:1.7}
+.ds-header-meta{display:flex;gap:36px;flex-wrap:wrap;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07)}
+.ds-header-meta-item{font-size:12px;color:rgba(255,255,255,.4)}
+.ds-header-meta-item strong{display:block;color:#fff;font-size:13px;margin-bottom:2px}
+
+/* ── SECTION TITLE ── */
+.section-title{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-light);padding-bottom:10px;margin-bottom:28px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';width:3px;height:14px;background:var(--mint);border-radius:2px;flex-shrink:0}
+.section-num{font-size:10px;font-family:monospace;color:var(--mint);margin-right:2px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border-light);border-radius:var(--r-card);padding:24px}
+.card-dark{background:var(--ink-card);border:1px solid var(--border-dark);border-radius:var(--r-card);padding:24px}
+.card-clay{background:var(--clay-dark);border:1px solid var(--border-light);border-radius:var(--r-card);padding:24px}
+.card-label{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+
+/* ── CORES — swatches ── */
+.color-swatch{border-radius:var(--r-card);overflow:hidden;border:1px solid var(--border-light)}
+.color-block{height:84px;display:flex;align-items:flex-end;padding:10px 12px}
+.color-info{padding:12px;background:var(--white)}
+.color-name{font-size:13px;font-weight:600;color:var(--text-primary)}
+.color-hex{font-size:11px;color:var(--text-muted);font-family:monospace;margin:2px 0}
+.color-rule{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.color-tag{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;background:rgba(0,0,0,.15);color:rgba(0,0,0,.75)}
+.color-tag-light{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.9)}
+
+/* ── TIPOGRAFIA ── */
+.type-row{display:flex;align-items:baseline;gap:20px;padding:14px 0;border-bottom:1px solid var(--border-light)}
+.type-row:last-child{border-bottom:none}
+.type-meta{min-width:138px;flex-shrink:0}
+.type-meta-label{font-size:11px;font-weight:500;color:var(--text-muted);font-family:monospace}
+.type-meta-spec{font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.5}
+.type-preview{flex:1;color:var(--text-primary)}
+.type-preview.muted{color:var(--text-secondary)}
+
+/* ── BOTÕES ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:var(--r-btn);font-family:var(--font-sans);font-size:14px;font-weight:500;cursor:pointer;border:none;text-decoration:none;transition:all var(--dur-base) var(--ease-out);letter-spacing:.01em}
+.btn-primary{background:var(--mint);color:#fff}
+.btn-primary:hover{background:var(--mint-dark);transform:translateY(-1px);box-shadow:var(--shadow-mint)}
+.btn-outline{background:transparent;color:var(--text-primary);border:1.5px solid var(--text-primary)}
+.btn-outline:hover{background:var(--text-primary);color:#fff}
+.btn-outline-mint{background:transparent;color:var(--mint-dark);border:1.5px solid var(--mint)}
+.btn-outline-mint:hover{background:var(--mint);color:#fff}
+.btn-ghost{background:transparent;color:var(--text-secondary);border:none;text-decoration:underline;text-underline-offset:3px}
+.btn-dark-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+.btn-dark-outline:hover{background:rgba(255,255,255,.08)}
+.btn-danger{background:var(--risk);color:#fff}
+.btn-safe{background:var(--safe);color:#fff}
+.btn-sm{padding:7px 14px;font-size:12.5px}
+.btn-lg{padding:14px 30px;font-size:16px}
+.btn-icon{padding:10px;width:40px;height:40px;justify-content:center}
+.btn[disabled]{opacity:.4;cursor:not-allowed;pointer-events:none}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;padding:4px 10px;border-radius:var(--r-pill);font-family:var(--font-sans)}
+.badge-safe{background:var(--safe-bg);color:var(--safe);border:1px solid var(--safe-border)}
+.badge-caution{background:var(--caution-bg);color:var(--caution);border:1px solid var(--caution-border)}
+.badge-risk{background:var(--risk-bg);color:var(--risk);border:1px solid var(--risk-border)}
+.badge-info{background:var(--info-bg);color:var(--info);border:1px solid var(--info-border)}
+.badge-neutral{background:var(--clay-dark);color:var(--text-secondary);border:1px solid var(--border-light)}
+.badge-mint{background:var(--mint-pale);color:var(--mint-dark);border:1px solid var(--mint-light)}
+.badge-premium{background:var(--ink);color:var(--mint);border:1px solid rgba(46,196,160,.3)}
+
+/* ── DO / DON'T ── */
+.do-box{border:2px solid var(--safe);border-radius:var(--r-card);padding:16px}
+.dont-box{border:2px solid var(--risk);border-radius:var(--r-card);padding:16px}
+.do-label{font-size:11px;font-weight:700;color:var(--safe);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.dont-label{font-size:11px;font-weight:700;color:var(--risk);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.example{border-radius:8px;padding:12px 16px;margin-bottom:8px;text-align:center}
+
+/* ── INPUTS ── */
+.input-wrap{margin-bottom:14px}
+.input-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:4px;display:block}
+.input-demo{background:var(--white);border:1.5px solid var(--border-light);border-radius:var(--r-btn);padding:10px 14px;font-size:14px;font-family:var(--font-sans);color:var(--text-primary);width:100%;outline:none;transition:border-color .15s}
+.input-demo:focus{border-color:var(--mint)}
+.input-demo.error{border-color:var(--risk)}
+.input-hint{font-size:11px;color:var(--text-muted);margin-top:4px}
+.input-error-msg{font-size:11px;color:var(--risk);margin-top:4px}
+.input-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239B9084' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+
+/* ── TOGGLE / SWITCH ── */
+.toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer}
+.toggle{width:44px;height:24px;background:var(--border-light);border-radius:12px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--mint)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s var(--ease-out);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(20px)}
+.toggle-label{font-size:14px;color:var(--text-primary)}
+
+/* ── CHECKBOX / RADIO ── */
+.check-wrap{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer}
+.check-box{width:18px;height:18px;border:2px solid var(--border-light);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.check-box.checked{background:var(--mint);border-color:var(--mint)}
+.check-box.checked::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
+.radio-dot{width:18px;height:18px;border:2px solid var(--border-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.radio-dot.checked{border-color:var(--mint)}
+.radio-dot.checked::after{content:'';width:8px;height:8px;background:var(--mint);border-radius:50%}
+
+/* ── ÍCONES ── */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.icon-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:var(--r-card);border:1px solid var(--border-light);background:var(--white);cursor:pointer;transition:all .15s}
+.icon-item:hover{border-color:var(--mint);background:var(--mint-pale)}
+.icon-item svg{width:20px;height:20px;stroke:var(--text-muted);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.icon-item:hover svg{stroke:var(--mint-dark)}
+.icon-item span{font-size:10px;color:var(--text-muted);text-align:center}
+
+/* ── SKELETON / EMPTY ── */
+.skeleton{background:linear-gradient(90deg,var(--clay-dark) 25%,var(--border-light) 50%,var(--clay-dark) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--r-sm)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.empty-state{text-align:center;padding:48px 24px}
+.empty-icon{font-size:40px;margin-bottom:16px;opacity:.4}
+.empty-title{font-size:18px;font-weight:400;color:var(--text-primary);font-family:var(--font-serif);margin-bottom:8px}
+.empty-desc{font-size:14px;color:var(--text-muted);margin-bottom:20px}
+
+/* ── TOAST ── */
+.toast{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:var(--r-card);margin-bottom:8px;box-shadow:var(--shadow-md);background:var(--white);border:1px solid var(--border-light)}
+.toast-safe{border-left:3px solid var(--safe)}
+.toast-risk{border-left:3px solid var(--risk)}
+.toast-caution{border-left:3px solid var(--caution)}
+.toast-info{border-left:3px solid var(--info)}
+.toast-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.toast-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:2px}
+.toast-desc{font-size:13px;color:var(--text-muted)}
+
+/* ── NAVBAR MOBILE ── */
+.navbar-demo{background:var(--white);border-top:1px solid var(--border-light);padding:8px 0 4px;display:flex;justify-content:space-around;border-radius:0 0 var(--r-card-lg) var(--r-card-lg)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 12px;cursor:pointer;position:relative}
+.nav-item svg{width:22px;height:22px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active svg{stroke:var(--mint)}
+.nav-item span{font-size:10px;color:var(--text-muted);font-weight:500}
+.nav-item.active span{color:var(--mint-dark)}
+.nav-notif{position:absolute;top:2px;right:8px;width:7px;height:7px;background:var(--risk);border-radius:50%;border:2px solid #fff}
+
+/* ── TOPBAR MOBILE ── */
+.topbar-demo{background:var(--ink);border-radius:var(--r-card);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.topbar-logo-text{font-family:var(--font-serif);font-size:20px;font-weight:400;color:#fff}
+.topbar-logo-text span{color:var(--mint)}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.topbar-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.topbar-btn svg{width:16px;height:16px;stroke:rgba(255,255,255,.7);fill:none;stroke-width:1.5;stroke-linecap:round}
+.topbar-notif{position:absolute;top:-1px;right:-1px;width:8px;height:8px;background:var(--risk);border-radius:50%;border:2px solid var(--ink)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--mint-pale);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--mint-dark);font-family:var(--font-serif);flex-shrink:0;border:2px solid var(--mint-light)}
+
+/* ── PROGRESS ── */
+.progress-track{height:6px;background:var(--border-light);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .4s var(--ease-out)}
+.progress-sm{height:3px}
+.progress-lg{height:10px}
+
+/* ── SCORE RING ── */
+.score-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.score-circle{width:72px;height:72px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid}
+.score-circle.safe{border-color:var(--safe);background:var(--safe-bg)}
+.score-circle.caution{border-color:var(--caution);background:var(--caution-bg)}
+.score-circle.risk{border-color:var(--risk);background:var(--risk-bg)}
+.score-num{font-size:22px;font-weight:600;font-family:var(--font-sans);line-height:1}
+.score-circle.safe .score-num{color:var(--safe)}
+.score-circle.caution .score-num{color:var(--caution)}
+.score-circle.risk .score-num{color:var(--risk)}
+.score-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.score-circle.safe .score-label{color:var(--safe)}
+.score-circle.caution .score-label{color:var(--caution)}
+.score-circle.risk .score-label{color:var(--risk)}
+.score-desc{font-size:12px;color:var(--text-muted);text-align:center}
+
+/* ── INGREDIENT PILL ── */
+.ing-pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border-radius:var(--r-pill);margin:3px}
+.ing-safe{background:var(--safe-bg);color:var(--safe);border:1px solid var(--safe-border)}
+.ing-caution{background:var(--caution-bg);color:var(--caution);border:1px solid var(--caution-border)}
+.ing-risk{background:var(--risk-bg);color:var(--risk);border:1px solid var(--risk-border)}
+.ing-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ing-safe .ing-dot{background:var(--safe)}
+.ing-caution .ing-dot{background:var(--caution)}
+.ing-risk .ing-dot{background:var(--risk)}
+
+/* ── MODAL ── */
+.modal-demo{background:rgba(28,26,23,.55);border-radius:var(--r-card-lg);padding:24px;position:relative}
+.modal-box{background:var(--white);border-radius:var(--r-card-lg);padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-width:360px;margin:0 auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.modal-title{font-size:18px;font-weight:400;color:var(--text-primary);font-family:var(--font-serif)}
+.modal-close{width:28px;height:28px;border-radius:50%;background:var(--clay-dark);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-muted)}
+
+/* ── TABLE ── */
+.ds-table{width:100%;border-collapse:collapse;font-size:13px}
+.ds-table th{font-size:11px;font-weight:500;color:var(--text-muted);text-align:left;padding:8px 12px;background:var(--clay-dark);border-bottom:1px solid var(--border-light);white-space:nowrap}
+.ds-table td{padding:11px 12px;border-bottom:1px solid var(--border-light);color:var(--text-secondary);vertical-align:middle}
+.ds-table td:first-child{font-weight:500;color:var(--text-primary)}
+.ds-table tr:last-child td{border-bottom:none}
+.ds-table tr:hover td{background:var(--clay)}
+
+/* ── SPACE ── */
+.space-row{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+.space-bar{background:var(--mint);border-radius:2px;height:12px;flex-shrink:0}
+.space-label{font-size:12px;font-family:monospace;color:var(--text-primary);min-width:36px;font-weight:500}
+.space-desc{font-size:12px;color:var(--text-muted)}
+
+/* ── RADIUS ── */
+.radius-item{display:flex;flex-direction:column;align-items:center;gap:8px}
+.radius-demo{background:var(--mint)}
+.radius-label{font-size:11px;color:var(--text-muted);text-align:center;font-family:monospace}
+.radius-use{font-size:10px;color:var(--text-muted);text-align:center}
+
+/* ── MOTION ── */
+.motion-demo{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-light)}
+.motion-demo:last-child{border-bottom:none}
+.motion-box{width:40px;height:40px;background:var(--mint);border-radius:var(--r-btn);flex-shrink:0}
+.motion-info{flex:1}
+.motion-name{font-size:13px;font-weight:500;color:var(--text-primary)}
+.motion-spec{font-size:11px;font-family:monospace;color:var(--text-muted);margin-top:2px}
+
+/* ── UX WRITING ── */
+.writing-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--border-light)}
+.writing-row:last-child{border-bottom:none}
+.writing-col{padding:12px 14px;font-size:13px;line-height:1.5}
+.writing-col:first-child{border-right:1px solid var(--border-light);color:var(--risk)}
+.writing-col:last-child{color:var(--safe)}
+.writing-context{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px 6px;background:var(--clay-dark)}
+
+/* ── NOTA BOX ── */
+.nota-mint{background:var(--mint-pale);border-left:3px solid var(--mint);border-radius:0 var(--r-card) var(--r-card) 0;padding:14px 16px}
+.nota-warn{background:var(--caution-bg);border-left:3px solid var(--caution);border-radius:0 var(--r-card) var(--r-card) 0;padding:14px 16px}
+.nota-info{background:var(--info-bg);border-left:3px solid var(--info);border-radius:0 var(--r-card) var(--r-card) 0;padding:14px 16px}
+.nota-safe{background:var(--safe-bg);border-left:3px solid var(--safe);border-radius:0 var(--r-card) var(--r-card) 0;padding:14px 16px}
+.nota-risk{background:var(--risk-bg);border-left:3px solid var(--risk);border-radius:0 var(--r-card) var(--r-card) 0;padding:14px 16px}
+
+/* ── PREMIUM ── */
+.premium-card{background:var(--ink);border-radius:var(--r-card-lg);padding:28px;position:relative;overflow:hidden}
+.premium-card::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(46,196,160,.12) 0%,transparent 70%);pointer-events:none}
+.premium-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,196,160,.15);border:1px solid rgba(46,196,160,.3);color:var(--mint);font-size:11px;font-weight:600;padding:4px 12px;border-radius:var(--r-pill);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.premium-title{font-family:var(--font-serif);font-size:26px;font-weight:400;color:#fff;margin-bottom:8px}
+.premium-price{font-size:32px;font-weight:600;color:var(--mint);font-family:var(--font-sans);line-height:1}
+.premium-price sub{font-size:14px;font-weight:400;color:rgba(255,255,255,.4);vertical-align:baseline}
+.premium-feature{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.5}
+.premium-feature-dot{width:18px;height:18px;border-radius:50%;background:rgba(46,196,160,.2);border:1px solid rgba(46,196,160,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;color:var(--mint)}
+
+/* ── RHYTHM ── */
+.rhythm-item{border-radius:8px;padding:14px 16px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+
+/* ── QUIZ / PREFERÊNCIAS ── */
+.pref-option{border:1.5px solid var(--border-light);border-radius:var(--r-card);padding:14px 16px;cursor:pointer;transition:all .15s;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.pref-option:hover{border-color:var(--mint-light);background:var(--mint-pale)}
+.pref-option.selected{border-color:var(--mint);background:var(--mint-pale)}
+.pref-option-icon{width:36px;height:36px;border-radius:50%;background:var(--clay-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.pref-option.selected .pref-option-icon{background:var(--mint-pale)}
+.pref-option-title{font-size:15px;font-weight:500;color:var(--text-primary)}
+.pref-option-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+@media(max-width:768px){.ds-nav{display:none}.ds-body{margin-left:0}.page{padding:24px 16px}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.dark-toggle{top:12px;right:12px}}
+@media print{.ds-nav,.dark-toggle{display:none}.ds-body{margin-left:0}}
+</style>
+</head>
+<body>
+
+<button class="dark-toggle" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'':'dark';this.textContent=document.documentElement.dataset.theme==='dark'?'☀ Modo claro':'🌙 Modo escuro'">🌙 Modo escuro</button>
+
+<nav class="ds-nav">
+  <div class="ds-nav-logo">
+    <div class="ds-nav-logo-name">Cosm<span>ind</span>_</div>
+    <div class="ds-nav-logo-sub">Design System v1.0</div>
+  </div>
+  <div class="ds-nav-section">Fundação</div>
+  <a href="#cores" class="active">1 · Paleta de Cores</a>
+  <a href="#tipografia">2 · Tipografia</a>
+  <a href="#icones">3 · Ícones</a>
+  <a href="#grid">4 · Grid e Layout</a>
+  <a href="#espacamento">5 · Espaçamento</a>
+  <a href="#radius">6 · Border Radius</a>
+  <a href="#motion">7 · Motion</a>
+  <div class="ds-nav-section">Componentes</div>
+  <a href="#botoes">8 · Botões</a>
+  <a href="#badges">9 · Badges e Status</a>
+  <a href="#inputs">10 · Inputs e Forms</a>
+  <a href="#navegacao">11 · Navegação Mobile</a>
+  <a href="#cards">12 · Cards e Listas</a>
+  <a href="#estados">13 · Estados</a>
+  <a href="#toasts">14 · Toasts e Alertas</a>
+  <a href="#modais">15 · Modais</a>
+  <a href="#preferencias">16 · Preferências</a>
+  <div class="ds-nav-section">Produto</div>
+  <a href="#score">17 · Sistema de Score</a>
+  <a href="#premium">18 · Premium</a>
+  <a href="#uxwriting">19 · Tom de Voz</a>
+  <a href="#tokens">20 · Tokens CSS</a>
+  <div class="ds-nav-footer">Junho 2026 · v1.0<br>Listra_ × Cosmind</div>
+</nav>
+
+<div class="ds-body">
+<div class="page">
+
+<div class="ds-header">
+  <div class="ds-header-label">Design System</div>
+  <div class="ds-header-title"><span>Cosmind</span>_ — Guia Visual</div>
+  <div class="ds-header-sub">Identidade visual, componentes e linguagem do app brasileiro de análise consciente de ingredientes cosméticos.</div>
+  <div class="ds-header-meta">
+    <div class="ds-header-meta-item"><strong>Versão</strong>1.0 — Junho 2026</div>
+    <div class="ds-header-meta-item"><strong>Produto</strong>iOS + Android</div>
+    <div class="ds-header-meta-item"><strong>Fontes</strong>DM Serif Display + DM Sans</div>
+    <div class="ds-header-meta-item"><strong>Seções</strong>20 seções</div>
+    <div class="ds-header-meta-item"><strong>Cliente</strong>Mariana & Juliana Chebly</div>
+    <div class="ds-header-meta-item"><strong>Agência</strong>Listra_</div>
+  </div>
+</div>
+
+<!-- ═══════ 1. CORES ═══════ -->
+<div class="section" id="cores">
+  <div class="section-title"><span class="section-num">01</span> Paleta de Cores — Psicologia e Uso</div>
+
+  <div class="nota-mint" style="margin-bottom:24px">
+    <div style="font-size:12px;font-weight:600;color:var(--mint-dark);margin-bottom:6px">Raciocínio por trás da paleta</div>
+    <div style="font-size:13px;color:var(--mint-dark);line-height:1.75">O Cosmind vive entre dois mundos: o universo sensorial da beleza e a sobriedade de quem toma decisões informadas. <strong>Verde botânico</strong> (—mint) sinaliza segurança, natureza e transparência — exatamente o que a consumidora de clean beauty busca. <strong>Clay quente</strong> (—clay) substitui o branco clínico de apps médicos e o verde genérico de apps de supermercado, entregando calor e premiumidade sem perder clareza. <strong>Ink</strong> ancorado no escuro dá peso, credibilidade e contraste sem agressividade.</div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:16px">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#2EC4A0"><span class="color-tag-light">texto branco</span></div>
+      <div class="color-info"><div class="color-name">Mint</div><div class="color-hex">#2EC4A0</div><div class="color-rule">Accent principal. Botões, CTAs, ícones ativos, score seguro, progress bars.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#1C1A17"><span class="color-tag-light">texto branco/mint</span></div>
+      <div class="color-info"><div class="color-name">Ink</div><div class="color-hex">#1C1A17</div><div class="color-rule">Header escuro, topbar, cards de ingrediente dark, fundo Premium.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#F7F3EE;border:1px solid #E0D9D0"><span class="color-tag">texto escuro</span></div>
+      <div class="color-info"><div class="color-name">Clay</div><div class="color-hex">#F7F3EE</div><div class="color-rule">Fundo principal do app. Calor orgânico. Remete a ingredientes naturais, papel kraft.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#FFFFFF;border:1px solid #E0D9D0"><span class="color-tag">texto escuro</span></div>
+      <div class="color-info"><div class="color-name">White</div><div class="color-hex">#FFFFFF</div><div class="color-rule">Cards sobre clay, modais, inputs, listas. Máximo contraste para leitura.</div></div>
+    </div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:16px">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#7DE0CB"><span class="color-tag">texto escuro</span></div>
+      <div class="color-info"><div class="color-name">Mint Light</div><div class="color-hex">#7DE0CB</div><div class="color-rule">Hover, bordas de destaque, gradientes decorativos.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#E6F8F4;border:1px solid #7DE0CB"><span class="color-tag">texto escuro</span></div>
+      <div class="color-info"><div class="color-name">Mint Pale</div><div class="color-hex">#E6F8F4</div><div class="color-rule">Fundo de badges mint, opções selecionadas, estado ativo leve.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#5A5346"><span class="color-tag-light">texto claro</span></div>
+      <div class="color-info"><div class="color-name">Text Secondary</div><div class="color-hex">#5A5346</div><div class="color-rule">Subtítulos, descrições de ingredientes, labels de input.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#9B9084"><span class="color-tag-light">texto claro</span></div>
+      <div class="color-info"><div class="color-name">Text Muted</div><div class="color-hex">#9B9084</div><div class="color-rule">Captions, datas, metadados, placeholders.</div></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px"><span class="section-num">01b</span> Cores Semânticas — Sistema de Score</div>
+  <div class="nota-info" style="margin-bottom:16px"><div style="font-size:12px;font-weight:600;color:var(--info);margin-bottom:4px">Regra de ouro</div><div style="font-size:12px;color:var(--info);line-height:1.65">As cores semânticas do Cosmind <strong>não são vermelho-verde genérico</strong>. Usamos verde floresta (safe), âmbar quente (caution) e vermelho-tijolo (risk) — tons que remetem a natureza e laboratório, não a semáforo de trânsito. Isso reduz a ansiedade do usuário e eleva o padrão visual.</div></div>
+  <div class="grid-3">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#2D7A52"><span class="color-tag-light">Seguro</span></div>
+      <div class="color-info"><div class="color-name">Safe / Verde Floresta</div><div class="color-hex">#2D7A52 · bg #E4F4EC</div><div class="color-rule">Ingrediente sem restrições. Score 0–3. Badge, dot, progress e ícone de verificação.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#8A6A10"><span class="color-tag-light">Atenção</span></div>
+      <div class="color-info"><div class="color-name">Caution / Âmbar</div><div class="color-hex">#8A6A10 · bg #FEF5DC</div><div class="color-rule">Ingrediente com ressalvas moderadas. Score 4–6. Comunicar sem alarmar.</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#A03030"><span class="color-tag-light">Risco</span></div>
+      <div class="color-info"><div class="color-name">Risk / Vermelho Tijolo</div><div class="color-hex">#A03030 · bg #FAEAEA</div><div class="color-rule">Ingrediente controverso ou proibido. Score 7–10. Alerta claro, nunca agressivo.</div></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:16px">
+    <div class="do-box">
+      <div class="do-label">✓ Correto</div>
+      <div class="example" style="background:#2EC4A0"><span style="font-size:14px;font-weight:600;color:#fff;font-family:'DM Sans',sans-serif">Fundo mint → texto branco</span></div>
+      <div class="example" style="background:#1C1A17"><span style="font-size:14px;font-weight:400;color:#2EC4A0;font-family:'DM Serif Display',serif;font-size:17px">Fundo ink → texto mint</span></div>
+      <div class="example" style="background:#F7F3EE;border:1px solid #E0D9D0"><span style="font-size:14px;font-weight:500;color:#1C1A17;font-family:'DM Sans',sans-serif">Clay → texto ink quente</span></div>
+    </div>
+    <div class="dont-box">
+      <div class="dont-label">✗ Proibido</div>
+      <div class="example" style="background:#fff;border:1px solid #eee"><span style="font-size:14px;font-weight:600;color:#2EC4A0">Texto mint sobre branco ← contraste insuficiente</span></div>
+      <div class="example" style="background:#F7F3EE"><span style="font-size:14px;font-weight:600;color:#7DE0CB">Mint light como texto ← some no clay</span></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.55">Mint como texto funciona apenas em fundos muito escuros (ink) ou como valor numérico de destaque grande. Em body, sempre ink ou text-secondary.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 2. TIPOGRAFIA ═══════ -->
+<div class="section" id="tipografia">
+  <div class="section-title"><span class="section-num">02</span> Tipografia — Dual Font System</div>
+  <div style="background:var(--ink);border-radius:var(--r-card);padding:12px 16px;margin-bottom:12px;font-family:monospace;font-size:12px;color:var(--mint);line-height:1.8">@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');</div>
+  <div class="nota-info" style="margin-bottom:16px"><div style="font-size:12px;font-weight:600;color:var(--info);margin-bottom:4px">Regra de uso das fontes</div><div style="font-size:12px;color:var(--info);line-height:1.65"><strong>DM Serif Display</strong> → saudações, títulos de tela, nome do produto analisado, headlines. Transmite elegância editorial sem peso excessivo.<br><strong>DM Sans</strong> → labels, botões, body, captions, dados numéricos, navegação, qualquer texto funcional. Altamente legível em tamanhos pequenos.</div></div>
+  <div class="card">
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Display / Hero</div><div class="type-meta-spec">DM Serif · 400<br>36–44px · lh 1.08</div></div>
+      <div class="type-preview" style="font-size:38px;font-weight:400;font-family:'DM Serif Display',serif;letter-spacing:-.01em">Olá, Mariana</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Nome do produto</div><div class="type-meta-spec">DM Serif · 400<br>24–28px · lh 1.15</div></div>
+      <div class="type-preview" style="font-size:26px;font-weight:400;font-family:'DM Serif Display',serif">Hidratante Facial Natura</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">H2 Seção</div><div class="type-meta-spec">DM Serif · 400<br>20–22px · lh 1.2</div></div>
+      <div class="type-preview" style="font-size:21px;font-weight:400;font-family:'DM Serif Display',serif">Análise de Ingredientes</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Label Uppercase</div><div class="type-meta-spec">DM Sans · 600<br>11–12px · lh 1.3<br>letter-spacing .1em</div></div>
+      <div class="type-preview" style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;color:var(--text-muted)">INGREDIENTES · HISTÓRICO · SCAN · PREMIUM</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Subtítulo</div><div class="type-meta-spec">DM Sans · 500<br>15px · lh 1.6<br>cor #5A5346</div></div>
+      <div class="type-preview muted" style="font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif">Escaneie, pesquise e entenda o que você coloca na pele.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Corpo</div><div class="type-meta-spec">DM Sans · 400<br>14px · lh 1.7<br>cor #5A5346</div></div>
+      <div class="type-preview muted" style="font-size:14px;font-family:'DM Sans',sans-serif">O Methylisothiazolinone é um conservante sintético com restrições na União Europeia e associado a alergias de contato. A ANVISA limita sua concentração em produtos rinse-off.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Score / Número</div><div class="type-meta-spec">DM Sans · 600<br>28–40px<br>cor semântica</div></div>
+      <div class="type-preview" style="font-size:36px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--safe)">2.4 <span style="font-size:14px;color:var(--text-muted);font-weight:400">/ 10</span></div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-meta-label">Caption</div><div class="type-meta-spec">DM Sans · 400<br>11–12px · lh 1.5<br>cor #9B9084</div></div>
+      <div class="type-preview" style="font-size:12px;color:#9B9084;font-family:'DM Sans',sans-serif">Escaneado em 12 jun 2026 · Fonte: Open Beauty Facts · INCI Decoder</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 3. ÍCONES ═══════ -->
+<div class="section" id="icones">
+  <div class="section-title"><span class="section-num">03</span> Ícones</div>
+  <div class="nota-mint" style="margin-bottom:16px"><div style="font-size:12px;font-weight:600;color:var(--mint-dark);margin-bottom:4px">Padrão de ícones do Cosmind</div><div style="font-size:12px;color:var(--mint-dark);line-height:1.7">Estilo stroke (outline), traço 1.5px, sem preenchimento colorido. Cor herda do contexto — <strong>var(--text-muted)</strong> no estado inativo, <strong>var(--mint)</strong> no ativo. Nunca emoji em UI funcional. Nunca ícone filled em navegação.</div></div>
+  <div class="card">
+    <div class="card-label">Ícones de módulo — app Cosmind</div>
+    <div class="icon-grid">
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Histórico</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Busca</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><path d="M3 9h3M3 12h3M3 15h3"/></svg><span>Scan</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Salvos</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Score</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>Alertas</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Notificações</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Progresso</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>Ingrediente</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg><span>Fonte</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg><span>Conquistas</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Lista</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>Comparar</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg><span>Vegano</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/><path d="M9 12l2 2 4-4"/></svg><span>Verificado</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4. GRID ═══════ -->
+<div class="section" id="grid">
+  <div class="section-title"><span class="section-num">04</span> Grid e Layout — Mobile</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Estrutura de tela mobile</div>
+      <div style="background:var(--ink);border-radius:24px;padding:10px;width:178px;margin:0 auto">
+        <div style="background:#27241F;border-radius:4px;height:20px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;padding:0 8px"><span style="font-size:8px;color:rgba(255,255,255,.5)">9:41</span><span style="font-size:8px;color:rgba(255,255,255,.4)">⚡</span></div>
+        <div style="background:var(--ink);height:64px;border-radius:4px;margin-bottom:3px;padding:8px"><span style="font-size:7px;color:var(--mint)">HEADER — ink + scan rápido</span></div>
+        <div style="background:#F7F3EE;height:190px;border-radius:4px;margin-bottom:3px;padding:6px"><span style="font-size:7px;color:var(--text-muted)">SCROLL — clay + cards brancos<br>padding: 16px horizontal<br><br>Cards de produto<br>Lista ingredientes<br>Score visual</span></div>
+        <div style="background:#fff;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:space-around;border:1px solid #E0D9D0"><span style="font-size:7px;color:var(--mint)">NAVBAR — 5 abas</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Especificações</div>
+      <table class="ds-table">
+        <thead><tr><th>Elemento</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Padding horizontal</td><td>16px (telas) · 20px (cards)</td></tr>
+          <tr><td>Gap entre cards</td><td>12px</td></tr>
+          <tr><td>Grid 2 colunas</td><td>1fr 1fr · gap 12px</td></tr>
+          <tr><td>Scroll horizontal</td><td>snap + padding 16px</td></tr>
+          <tr><td>Altura navbar</td><td>56px + safe area</td></tr>
+          <tr><td>Altura header</td><td>120–200px</td></tr>
+          <tr><td>Safe area top</td><td>env(safe-area-inset-top)</td></tr>
+          <tr><td>Safe area bottom</td><td>env(safe-area-inset-bottom)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 5. ESPAÇAMENTO ═══════ -->
+<div class="section" id="espacamento">
+  <div class="section-title"><span class="section-num">05</span> Espaçamento e Ritmo</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Escala</div>
+      <div class="space-row"><div class="space-label">4px</div><div class="space-bar" style="width:4px"></div><div class="space-desc">Gap micro — ícone e label</div></div>
+      <div class="space-row"><div class="space-label">8px</div><div class="space-bar" style="width:8px"></div><div class="space-desc">Gap interno de badges e pills</div></div>
+      <div class="space-row"><div class="space-label">12px</div><div class="space-bar" style="width:12px"></div><div class="space-desc">Gap entre itens de lista</div></div>
+      <div class="space-row"><div class="space-label">16px</div><div class="space-bar" style="width:16px"></div><div class="space-desc">Padding horizontal da tela</div></div>
+      <div class="space-row"><div class="space-label">24px</div><div class="space-bar" style="width:24px"></div><div class="space-desc">Padding interno de cards</div></div>
+      <div class="space-row"><div class="space-label">32px</div><div class="space-bar" style="width:32px"></div><div class="space-desc">Gap entre seções de tela</div></div>
+      <div class="space-row"><div class="space-label">48px</div><div class="space-bar" style="width:48px"></div><div class="space-desc">Padding após header</div></div>
+      <div class="space-row"><div class="space-label">64px</div><div class="space-bar" style="width:64px"></div><div class="space-desc">Padding bottom (acima navbar)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Alternância de fundos</div>
+      <div class="rhythm-item" style="background:#1C1A17"><div style="font-family:'DM Serif Display',serif;font-size:14px;color:#2EC4A0">Ink #1C1A17</div><div style="font-size:12px;color:#9B9084">Header, topbar, card Premium, fundo tela de scan</div></div>
+      <div class="rhythm-item" style="background:#F7F3EE;border:1px solid #E0D9D0"><div style="font-size:14px;color:#1C1A17;font-weight:500">Clay #F7F3EE</div><div style="font-size:12px;color:#9B9084">Fundo padrão do scroll e telas</div></div>
+      <div class="rhythm-item" style="background:#fff;border:1px solid #E0D9D0"><div style="font-size:14px;color:#1C1A17;font-weight:500">Branco #FFFFFF</div><div style="font-size:12px;color:#9B9084">Cards de produto, inputs, listas, modais</div></div>
+      <div class="rhythm-item" style="background:#EDE6DB;border:1px solid #E0D9D0"><div style="font-size:14px;color:#1C1A17;font-weight:500">Clay Dark #EDE6DB</div><div style="font-size:12px;color:#9B9084">Cards secundários, seções alternadas</div></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text-muted);line-height:1.65">Header sempre ink. Scroll em clay com cards brancos. Nunca dois clay seguidos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 6. RADIUS ═══════ -->
+<div class="section" id="radius">
+  <div class="section-title"><span class="section-num">06</span> Border Radius</div>
+  <div class="flex">
+    <div class="radius-item"><div class="radius-demo" style="border-radius:4px;width:52px;height:52px"></div><div class="radius-label">4px</div><div class="radius-use">dots, micro</div></div>
+    <div class="radius-item"><div class="radius-demo" style="border-radius:10px;width:52px;height:52px"></div><div class="radius-label">10px</div><div class="radius-use">botões, inputs</div></div>
+    <div class="radius-item"><div class="radius-demo" style="border-radius:14px;width:52px;height:52px"></div><div class="radius-label">14px</div><div class="radius-use">cards padrão</div></div>
+    <div class="radius-item"><div class="radius-demo" style="border-radius:20px;width:52px;height:52px"></div><div class="radius-label">20px</div><div class="radius-use">cards grandes, modais</div></div>
+    <div class="radius-item"><div class="radius-demo" style="border-radius:36px;width:52px;height:52px"></div><div class="radius-label">36px</div><div class="radius-use">frame celular</div></div>
+    <div class="radius-item"><div class="radius-demo" style="border-radius:9999px;width:84px;height:36px"></div><div class="radius-label">pill</div><div class="radius-use">badges, ingredientes, avatares</div></div>
+  </div>
+</div>
+
+<!-- ═══════ 7. MOTION ═══════ -->
+<div class="section" id="motion">
+  <div class="section-title"><span class="section-num">07</span> Motion e Microinterações</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Tokens de tempo</div>
+      <div class="motion-demo"><div class="motion-box" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='var(--shadow-mint)'" onmouseout="this.style.transform='';this.style.boxShadow=''"></div><div class="motion-info"><div class="motion-name">Fast — botões, badges, hover</div><div class="motion-spec">100ms · ease-out</div></div></div>
+      <div class="motion-demo"><div class="motion-box" style="border-radius:50%"></div><div class="motion-info"><div class="motion-name">Base — modais, toasts, score ring</div><div class="motion-spec">200ms · ease-out</div></div></div>
+      <div class="motion-demo"><div class="motion-box" style="border-radius:var(--r-pill);height:32px"></div><div class="motion-info"><div class="motion-name">Slow — transições de tela</div><div class="motion-spec">360ms · ease-out</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Regras de motion</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.9"><strong style="color:var(--text-primary)">Easing padrão</strong><br>cubic-bezier(0.16, 1, 0.3, 1)<br><br><strong style="color:var(--text-primary)">Score ring</strong><br>Animar fill de 0 até valor final — 400ms ease-out<br><br><strong style="color:var(--text-primary)">Ingredient pills</strong><br>Stagger de 40ms entre cada pill na lista<br><br><strong style="color:var(--text-primary)">Scan → resultado</strong><br>Transição com fade + scale 0.97→1 · 280ms<br><br><strong style="color:var(--text-primary)">prefers-reduced-motion</strong><br>Sempre respeitado — obrigatório</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 8. BOTÕES ═══════ -->
+<div class="section" id="botoes">
+  <div class="section-title"><span class="section-num">08</span> Botões</div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-label">Fundo claro — clay e branco</div>
+    <div class="flex" style="margin-bottom:16px">
+      <a class="btn btn-primary">Analisar produto</a>
+      <a class="btn btn-outline">Ver detalhes →</a>
+      <a class="btn btn-outline-mint">Seja Premium</a>
+      <a class="btn btn-ghost">Ver todos</a>
+    </div>
+    <div class="flex">
+      <a class="btn btn-primary btn-sm">Salvar</a>
+      <a class="btn btn-outline btn-sm">Cancelar</a>
+      <a class="btn btn-safe">Ingrediente seguro</a>
+      <a class="btn btn-danger">Ingrediente de risco</a>
+      <a class="btn btn-outline" disabled>Desabilitado</a>
+    </div>
+  </div>
+  <div class="card-dark" style="margin-bottom:14px">
+    <div class="card-label" style="color:rgba(255,255,255,.4)">Fundo escuro — ink, header, Premium</div>
+    <div class="flex">
+      <a class="btn btn-primary">Assinar agora →</a>
+      <a class="btn btn-dark-outline">Ver ingredientes</a>
+    </div>
+  </div>
+  <div class="nota-warn"><div style="font-size:12px;font-weight:600;color:var(--caution);margin-bottom:4px">Regras de botão</div><div style="font-size:12px;color:var(--caution);line-height:1.65">✗ Nunca uppercase em label — sentence case sempre<br>✓ Botão primário mint = CTA de maior prioridade — só um por tela<br>✓ Full-width no mobile para ações principais (Analisar, Assinar, Salvar)<br>✓ Estado loading: substituir label por spinner + "Analisando..."<br>✗ Nunca dois botões de cor sólida juntos na mesma linha</div></div>
+</div>
+
+<!-- ═══════ 9. BADGES ═══════ -->
+<div class="section" id="badges">
+  <div class="section-title"><span class="section-num">09</span> Badges e Status</div>
+  <div class="card">
+    <div class="card-label">Variantes</div>
+    <div class="flex" style="margin-bottom:20px">
+      <span class="badge badge-safe">✓ Seguro</span>
+      <span class="badge badge-caution">⚠ Atenção</span>
+      <span class="badge badge-risk">✕ Risco</span>
+      <span class="badge badge-mint">Vegano</span>
+      <span class="badge badge-mint">Cruelty-free</span>
+      <span class="badge badge-info">Novo</span>
+      <span class="badge badge-neutral">Clean label</span>
+      <span class="badge badge-premium">Premium</span>
+    </div>
+    <table class="ds-table">
+      <thead><tr><th>Badge</th><th>Fundo</th><th>Texto</th><th>Uso</th></tr></thead>
+      <tbody>
+        <tr><td>badge-safe</td><td>#E4F4EC</td><td>#2D7A52</td><td>Ingrediente ou produto sem restrições</td></tr>
+        <tr><td>badge-caution</td><td>#FEF5DC</td><td>#8A6A10</td><td>Ingrediente com ressalvas moderadas</td></tr>
+        <tr><td>badge-risk</td><td>#FAEAEA</td><td>#A03030</td><td>Ingrediente controverso, restrito ou proibido</td></tr>
+        <tr><td>badge-mint</td><td>#E6F8F4</td><td>#1A8A70</td><td>Atributos positivos: vegano, cruelty-free, orgânico</td></tr>
+        <tr><td>badge-info</td><td>#EBF2FC</td><td>#2455A0</td><td>Novidade, informação, lançamento, fonte</td></tr>
+        <tr><td>badge-neutral</td><td>#EDE6DB</td><td>#5A5346</td><td>Status default, atributo sem urgência</td></tr>
+        <tr><td>badge-premium</td><td>#1C1A17</td><td>#2EC4A0</td><td>Funcionalidade exclusiva, bloqueada no free</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════ 10. INPUTS ═══════ -->
+<div class="section" id="inputs">
+  <div class="section-title"><span class="section-num">10</span> Inputs e Formulários</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Estados dos campos</div>
+      <div class="input-wrap"><label class="input-label">Nome</label><input class="input-demo" type="text" value="Mariana Chebly" readonly /></div>
+      <div class="input-wrap"><label class="input-label">E-mail</label><input class="input-demo" type="text" value="mari@email.com" readonly /></div>
+      <div class="input-wrap"><label class="input-label">Tipo de pele</label><select class="input-demo input-select"><option>Oleosa</option><option>Seca</option><option>Mista</option><option>Sensível</option></select></div>
+      <div class="input-wrap"><label class="input-label" style="color:var(--text-muted)">Desabilitado</label><input class="input-demo" value="Campo desabilitado" disabled style="opacity:.5;background:var(--clay-dark)" /></div>
+      <div class="input-wrap"><label class="input-label" style="color:var(--risk)">Com erro</label><input class="input-demo error" value="email_invalido" readonly /><div class="input-error-msg">E-mail inválido. Verifique e tente novamente.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Preferências — controles</div>
+      <div style="margin-bottom:16px">
+        <div class="card-label" style="margin-bottom:8px">Ingredientes a evitar</div>
+        <div class="check-wrap"><div class="check-box checked"></div><span class="toggle-label">Parabenos</span></div>
+        <div class="check-wrap"><div class="check-box checked"></div><span class="toggle-label">Sulfatos</span></div>
+        <div class="check-wrap"><div class="check-box"></div><span class="toggle-label" style="color:var(--text-muted)">Silicones</span></div>
+        <div class="check-wrap"><div class="check-box"></div><span class="toggle-label" style="color:var(--text-muted)">Fragrâncias sintéticas</span></div>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px">Notificações</div>
+        <div class="toggle-wrap" style="margin-bottom:8px"><div class="toggle on"></div><span class="toggle-label">Alertas de ingredientes</span></div>
+        <div class="toggle-wrap" style="margin-bottom:8px"><div class="toggle on"></div><span class="toggle-label">Novos produtos salvos</span></div>
+        <div class="toggle-wrap"><div class="toggle"></div><span class="toggle-label" style="color:var(--text-muted)">Newsletter semanal</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 11. NAVEGAÇÃO ═══════ -->
+<div class="section" id="navegacao">
+  <div class="section-title"><span class="section-num">11</span> Navegação Mobile</div>
+  <div class="grid-2">
+    <div>
+      <div class="card-label" style="margin-bottom:10px">Topbar — fundo ink</div>
+      <div class="topbar-demo">
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.12em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:2px">cosmind</div><div class="topbar-logo-text">Cosm<span>ind</span>_</div></div>
+        <div class="topbar-actions">
+          <div class="topbar-btn"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div class="topbar-btn"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="topbar-notif"></div></div>
+          <div class="avatar">MC</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card-label" style="margin-bottom:10px">Bottom navbar — 5 abas</div>
+      <div style="background:var(--white);border:1px solid var(--border-light);border-radius:var(--r-card-lg);padding:8px 0 12px">
+        <div class="navbar-demo" style="border-top:none;background:transparent">
+          <div class="nav-item active">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span>Histórico</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Busca</span>
+          </div>
+          <div class="nav-item" style="position:relative">
+            <div style="width:52px;height:52px;background:var(--mint);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-20px;box-shadow:0 4px 16px rgba(46,196,160,.4)">
+              <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h3"/></svg>
+            </div>
+            <span style="color:var(--mint-dark)">Scan</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>Salvos</span><div class="nav-notif"></div>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Perfil</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text-muted);line-height:1.6">Aba ativa: ícone + label em mint. O botão Scan é o FAB central elevado — sempre em destaque mint. Notificação: dot risk no canto superior direito.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 12. CARDS ═══════ -->
+<div class="section" id="cards">
+  <div class="section-title"><span class="section-num">12</span> Cards e Listas</div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div>
+      <div class="card-label" style="margin-bottom:8px">Card de produto analisado</div>
+      <div class="card" style="padding:20px">
+        <div style="display:flex;align-items:flex-start;gap:14px">
+          <div style="width:56px;height:56px;border-radius:12px;background:var(--clay-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px">🧴</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px">Natura · Hidratante</div>
+            <div style="font-size:17px;font-weight:400;font-family:'DM Serif Display',serif;color:var(--text-primary);line-height:1.2;margin-bottom:8px">Chronos Antissinais</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--safe);background:var(--safe-bg);display:flex;align-items:center;justify-content:center"><span style="font-size:12px;font-weight:700;color:var(--safe)">2.1</span></div>
+              <span class="badge badge-safe">Seguro</span>
+              <span class="badge badge-mint">Vegano</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border-light);font-size:12px;color:var(--text-muted)">Escaneado há 2 horas · 34 ingredientes analisados</div>
+      </div>
+    </div>
+    <div>
+      <div class="card-label" style="margin-bottom:8px">Card de ingrediente</div>
+      <div class="card" style="padding:20px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:3px">Methylisothiazolinone</div>
+            <div style="font-size:12px;color:var(--text-muted)">Conservante sintético</div>
+          </div>
+          <div style="width:40px;height:40px;border-radius:50%;border:2px solid var(--risk);background:var(--risk-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:13px;font-weight:700;color:var(--risk)">8.5</span></div>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:12px">Proibido em produtos leave-on na União Europeia desde 2017. A ANVISA restringe sua concentração em rinse-off a 0,0015%.</div>
+        <div class="flex"><span class="badge badge-risk">Alto risco</span><span class="badge badge-info">Restrito EU</span><span class="badge badge-caution">ANVISA</span></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card-label" style="margin-bottom:8px">Lista de ingredientes (modo expandido)</div>
+    <div class="card" style="padding:20px">
+      <div style="margin-bottom:12px;font-size:13px;color:var(--text-muted)">34 ingredientes · 28 seguros · 4 atenção · 2 risco</div>
+      <div style="display:flex;flex-wrap:wrap">
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Aqua</span>
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Glycerin</span>
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Niacinamide</span>
+        <span class="ing-pill ing-caution"><span class="ing-dot"></span>Phenoxyethanol</span>
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Panthenol</span>
+        <span class="ing-pill ing-risk"><span class="ing-dot"></span>Parfum</span>
+        <span class="ing-pill ing-caution"><span class="ing-dot"></span>Propylene Glycol</span>
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Sodium Hyaluronate</span>
+        <span class="ing-pill ing-risk"><span class="ing-dot"></span>BHT</span>
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Tocopherol</span>
+        <span class="ing-pill ing-safe"><span class="ing-dot"></span>Citric Acid</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 13. ESTADOS ═══════ -->
+<div class="section" id="estados">
+  <div class="section-title"><span class="section-num">13</span> Estados — Skeleton, Vazio, Erro</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-label" style="margin-bottom:12px">Carregando</div>
+      <div class="skeleton" style="height:14px;width:60%;margin-bottom:8px"></div>
+      <div class="skeleton" style="height:22px;width:90%;margin-bottom:8px"></div>
+      <div class="skeleton" style="height:14px;width:40%;margin-bottom:16px"></div>
+      <div class="skeleton" style="height:36px;width:100%"></div>
+    </div>
+    <div class="card">
+      <div class="empty-state" style="padding:24px 12px">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">Nada encontrado</div>
+        <div class="empty-desc">Tente um nome diferente ou escaneie o código de barras.</div>
+        <a class="btn btn-primary btn-sm">Escanear produto</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="empty-state" style="padding:24px 12px">
+        <div class="empty-icon">📦</div>
+        <div class="empty-title">Produto não cadastrado</div>
+        <div class="empty-desc">Fotografe o rótulo e analisamos os ingredientes na hora.</div>
+        <a class="btn btn-outline-mint btn-sm">Fotografar rótulo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 14. TOASTS ═══════ -->
+<div class="section" id="toasts">
+  <div class="section-title"><span class="section-num">14</span> Toasts e Alertas</div>
+  <div class="toast toast-safe"><div class="toast-icon">✓</div><div><div class="toast-title">Produto salvo com sucesso</div><div class="toast-desc">Chronos Antissinais foi adicionado aos seus favoritos.</div></div></div>
+  <div class="toast toast-risk"><div class="toast-icon">⚠</div><div><div class="toast-title">Ingrediente de risco detectado</div><div class="toast-desc">Este produto contém BHT e Parfum — dois ingredientes que você optou por evitar.</div></div></div>
+  <div class="toast toast-caution"><div class="toast-icon">◐</div><div><div class="toast-title">Atenção: produto com ressalvas</div><div class="toast-desc">4 ingredientes merecem atenção. Toque para ver os detalhes.</div></div></div>
+  <div class="toast toast-info"><div class="toast-icon">ℹ</div><div><div class="toast-title">Limite diário atingido</div><div class="toast-desc">Você consultou 3 produtos hoje. Seja Premium para consultas ilimitadas.</div></div></div>
+</div>
+
+<!-- ═══════ 15. MODAIS ═══════ -->
+<div class="section" id="modais">
+  <div class="section-title"><span class="section-num">15</span> Modais e Bottom Sheets</div>
+  <div class="modal-demo">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">Sobre este ingrediente</div>
+        <button class="modal-close">✕</button>
+      </div>
+      <div style="margin-bottom:12px"><span class="badge badge-risk" style="margin-bottom:8px;display:inline-flex">Alto risco · 8.5 / 10</span><div style="font-size:14px;color:var(--text-secondary);line-height:1.7">O BHT (Butilhidroxitolueno) é um antioxidante sintético com possível ação disruptora endócrina. Banido em cosméticos orgânicos certificados.</div></div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;line-height:1.6">Fontes: EWG Skin Deep · INCI Decoder · ANVISA RDC 15/2023</div>
+      <div style="display:flex;gap:8px"><a class="btn btn-primary btn-sm" style="flex:1;justify-content:center">Ver alternativas</a><a class="btn btn-outline btn-sm">Fechar</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 16. PREFERÊNCIAS ═══════ -->
+<div class="section" id="preferencias">
+  <div class="section-title"><span class="section-num">16</span> Preferências e Seleção de Perfil</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label" style="margin-bottom:14px">Tipo de pele</div>
+      <div class="pref-option selected"><div class="pref-option-icon">💧</div><div><div class="pref-option-title">Pele oleosa</div><div class="pref-option-sub">Tende a brilho e poros abertos</div></div></div>
+      <div class="pref-option"><div class="pref-option-icon">🌿</div><div><div class="pref-option-title">Pele seca</div><div class="pref-option-sub">Resseca com facilidade</div></div></div>
+      <div class="pref-option"><div class="pref-option-icon">✨</div><div><div class="pref-option-title">Pele mista</div><div class="pref-option-sub">Oleosa na zona T, seca nas bochechas</div></div></div>
+      <div class="pref-option"><div class="pref-option-icon">🌸</div><div><div class="pref-option-title">Pele sensível</div><div class="pref-option-sub">Reage facilmente a fragrâncias e conservantes</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="margin-bottom:14px">Estilo de consumo</div>
+      <div class="pref-option selected"><div class="pref-option-icon">🌱</div><div><div class="pref-option-title">Prefiro vegano</div><div class="pref-option-sub">Sem ingredientes de origem animal</div></div></div>
+      <div class="pref-option selected"><div class="pref-option-icon">🐰</div><div><div class="pref-option-title">Cruelty-free</div><div class="pref-option-sub">Não testado em animais</div></div></div>
+      <div class="pref-option"><div class="pref-option-icon">🌿</div><div><div class="pref-option-title">Clean beauty</div><div class="pref-option-sub">Fórmulas com menos sintéticos</div></div></div>
+      <div class="pref-option"><div class="pref-option-icon">🌍</div><div><div class="pref-option-title">Sustentável</div><div class="pref-option-sub">Foco em embalagem e impacto ambiental</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 17. SCORE ═══════ -->
+<div class="section" id="score">
+  <div class="section-title"><span class="section-num">17</span> Sistema de Score — Metodologia Visual</div>
+  <div class="nota-info" style="margin-bottom:20px">
+    <div style="font-size:12px;font-weight:600;color:var(--info);margin-bottom:6px">Como o score é calculado</div>
+    <div style="font-size:13px;color:var(--info);line-height:1.75">Escala crescente de risco de 0 a 10. Cada ingrediente recebe uma nota baseada nas avaliações do EWG Skin Deep, INCI Decoder e restrições da ANVISA. O score final do produto é a média ponderada dos ingredientes pelo peso de concentração (os primeiros da lista INCI têm maior peso). <strong>0–3 = Seguro · 4–6 = Atenção · 7–10 = Risco.</strong></div>
+  </div>
+  <div class="grid-3" style="margin-bottom:24px">
+    <div style="text-align:center;padding:24px;background:var(--white);border:1px solid var(--border-light);border-radius:var(--r-card)">
+      <div class="score-ring-wrap">
+        <div class="score-circle safe"><span class="score-num">2.1</span><span class="score-label">Seguro</span></div>
+        <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-top:8px">Natura Chronos</div>
+        <div class="score-desc">Score 0–3 · Fundo verde floresta</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:24px;background:var(--white);border:1px solid var(--border-light);border-radius:var(--r-card)">
+      <div class="score-ring-wrap">
+        <div class="score-circle caution"><span class="score-num">5.4</span><span class="score-label">Atenção</span></div>
+        <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-top:8px">L'Oréal Elvive</div>
+        <div class="score-desc">Score 4–6 · Fundo âmbar quente</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:24px;background:var(--white);border:1px solid var(--border-light);border-radius:var(--r-card)">
+      <div class="score-ring-wrap">
+        <div class="score-circle risk"><span class="score-num">8.2</span><span class="score-label">Risco</span></div>
+        <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-top:8px">Produto X</div>
+        <div class="score-desc">Score 7–10 · Fundo vermelho tijolo</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label" style="margin-bottom:16px">Progress bars de score por dimensão</div>
+    <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:6px"><span>Segurança para a saúde</span><span style="color:var(--safe)">1.8</span></div><div class="progress-track progress-lg"><div class="progress-fill" style="width:18%;background:var(--safe)"></div></div></div>
+    <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:6px"><span>Impacto ambiental</span><span style="color:var(--caution)">4.6</span></div><div class="progress-track progress-lg"><div class="progress-fill" style="width:46%;background:var(--caution)"></div></div></div>
+    <div style="margin-bottom:4px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:6px"><span>Alergênicos</span><span style="color:var(--risk)">7.3</span></div><div class="progress-track progress-lg"><div class="progress-fill" style="width:73%;background:var(--risk)"></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════ 18. PREMIUM ═══════ -->
+<div class="section" id="premium">
+  <div class="section-title"><span class="section-num">18</span> Premium — Tela e Componentes</div>
+  <div class="grid-2">
+    <div class="premium-card">
+      <div class="premium-badge">✦ Premium</div>
+      <div class="premium-title">Seja Premium e consulte sem limites</div>
+      <div style="margin:14px 0">
+        <div class="premium-price">R$ 34,90 <sub>/ano</sub></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:4px">R$ 2,91/mês · cancele quando quiser</div>
+      </div>
+      <div style="margin:20px 0">
+        <div class="premium-feature"><div class="premium-feature-dot">✓</div>Consultas ilimitadas por dia</div>
+        <div class="premium-feature"><div class="premium-feature-dot">✓</div>Alertas personalizados por ingrediente</div>
+        <div class="premium-feature"><div class="premium-feature-dot">✓</div>Recomendações baseadas no seu perfil</div>
+        <div class="premium-feature"><div class="premium-feature-dot">✓</div>Comparação detalhada entre produtos</div>
+        <div class="premium-feature"><div class="premium-feature-dot">✓</div>Análise de rótulo por foto (OCR)</div>
+      </div>
+      <a class="btn btn-primary" style="width:100%;justify-content:center">Assinar agora →</a>
+    </div>
+    <div>
+      <div class="card-label" style="margin-bottom:10px">Paywall — limite diário atingido</div>
+      <div style="background:var(--ink);border-radius:var(--r-card-lg);padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">🔒</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#fff;margin-bottom:8px">Limite diário atingido</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.65">Você consultou 3 produtos hoje. Com o Premium, consulte quantos quiser — por menos de R$ 3 por mês.</div>
+        <a class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:10px">Seja Premium</a>
+        <div style="font-size:12px;color:rgba(255,255,255,.25)">Restaurar compra · Termos · Privacidade</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 19. TOM DE VOZ ═══════ -->
+<div class="section" id="uxwriting">
+  <div class="section-title"><span class="section-num">19</span> Tom de Voz — UX Writing</div>
+  <div class="nota-mint" style="margin-bottom:20px"><div style="font-size:12px;font-weight:600;color:var(--mint-dark);margin-bottom:6px">Princípios de linguagem do Cosmind</div><div style="font-size:13px;color:var(--mint-dark);line-height:1.75"><strong>Clara, não alarmista.</strong> O Cosmind informa sem gerar ansiedade. Um ingrediente de risco não é um veneno — é uma informação.<br><strong>Científica, não hermética.</strong> Usamos a nomenclatura técnica mas sempre explicamos em português acessível.<br><strong>Empoderada, não condescendente.</strong> A usuária é inteligente. Damos o contexto e deixamos ela decidir.<br><strong>Brasileira.</strong> Contextualizamos dentro da ANVISA e do portfólio nacional — não do FDA.</div></div>
+  <div class="card">
+    <div class="writing-context">Resultados de scan</div>
+    <div class="writing-row"><div class="writing-col">✗ "ALERTA! Produto PERIGOSO detectado!"</div><div class="writing-col">✓ "2 ingredientes merecem atenção. Veja os detalhes."</div></div>
+    <div class="writing-row"><div class="writing-col">✗ "Você está usando veneno na pele."</div><div class="writing-col">✓ "O Parfum aqui pode ser irritante para pele sensível."</div></div>
+    <div class="writing-context">Produto não encontrado</div>
+    <div class="writing-row"><div class="writing-col">✗ "Produto não cadastrado no sistema."</div><div class="writing-col">✓ "Ainda não temos esse produto. Fotografe o rótulo e analisamos na hora."</div></div>
+    <div class="writing-context">Paywall</div>
+    <div class="writing-row"><div class="writing-col">✗ "Você atingiu o limite. Assine para continuar."</div><div class="writing-col">✓ "Você já consultou 3 produtos hoje — ótimo começo! Para consultas ilimitadas, conheça o Premium."</div></div>
+    <div class="writing-context">Empty state — histórico vazio</div>
+    <div class="writing-row"><div class="writing-col">✗ "Sem resultados ainda."</div><div class="writing-col">✓ "Seu histórico está em branco. Escaneie um produto para começar a entender o que você usa."</div></div>
+    <div class="writing-context">Score explicado</div>
+    <div class="writing-row"><div class="writing-col">✗ "Score: 7.8 — Risco"</div><div class="writing-col">✓ "Score 7.8 — Atenção alta. Alguns ingredientes têm restrições na Europa. Toque para entender."</div></div>
+  </div>
+</div>
+
+<!-- ═══════ 20. TOKENS ═══════ -->
+<div class="section" id="tokens">
+  <div class="section-title"><span class="section-num">20</span> Tokens CSS — Copiar para o Projeto</div>
+  <div style="background:var(--ink);border-radius:var(--r-card-lg);padding:24px;overflow-x:auto">
+    <pre style="font-family:monospace;font-size:11.5px;color:var(--mint);line-height:1.9;white-space:pre">:root {
+  /* ── ACCENT ── */
+  --cs-mint:           #2EC4A0;   /* accent principal — botões, CTAs, score seguro */
+  --cs-mint-light:     #7DE0CB;   /* hover, bordas de destaque */
+  --cs-mint-pale:      #E6F8F4;   /* fundo de badges mint, selecionados */
+  --cs-mint-dark:      #1A8A70;   /* texto mint sobre fundo claro */
+
+  /* ── NEUTROS ── */
+  --cs-ink:            #1C1A17;   /* header, topbar, fundo Premium */
+  --cs-ink-card:       #27241F;   /* cards escuros internos */
+  --cs-ink-hover:      #332F28;   /* hover dark */
+  --cs-clay:           #F7F3EE;   /* fundo principal do app */
+  --cs-clay-dark:      #EDE6DB;   /* cards alternativos, thead */
+  --cs-white:          #FFFFFF;   /* cards, inputs, modais */
+
+  /* ── TEXTOS ── */
+  --cs-text-primary:   #1C1A17;   /* texto principal */
+  --cs-text-secondary: #5A5346;   /* subtítulos, labels, descrições */
+  --cs-text-muted:     #9B9084;   /* captions, placeholders, datas */
+  --cs-text-mint:      #1A8A70;   /* texto mint sobre fundo claro */
+
+  /* ── BORDAS ── */
+  --cs-border-light:   #E0D9D0;   /* bordas em fundo claro */
+  --cs-border-dark:    rgba(255,255,255,0.09); /* bordas em fundo escuro */
+
+  /* ── SEMÂNTICAS — SCORE ── */
+  --cs-safe:           #2D7A52;   --cs-safe-bg:    #E4F4EC;   --cs-safe-border:    #A8DFC0;
+  --cs-caution:        #8A6A10;   --cs-caution-bg: #FEF5DC;   --cs-caution-border: #F5D87A;
+  --cs-risk:           #A03030;   --cs-risk-bg:    #FAEAEA;   --cs-risk-border:    #F0ABAB;
+  --cs-info:           #2455A0;   --cs-info-bg:    #EBF2FC;   --cs-info-border:    #A0BFED;
+
+  /* ── TIPOGRAFIA ── */
+  --cs-font-serif: 'DM Serif Display', Georgia, serif;
+  --cs-font-sans:  'DM Sans', system-ui, sans-serif;
+  --cs-fw-light:   300;
+  --cs-fw-regular: 400;
+  --cs-fw-medium:  500;
+  --cs-fw-semibold:600;
+
+  /* ── TAMANHOS MOBILE ── */
+  --cs-fs-display: 38px;   /* Olá, Nome */
+  --cs-fs-h1:      26px;   /* nome do produto */
+  --cs-fs-h2:      21px;   /* títulos de seção */
+  --cs-fs-label:   12px;   /* labels uppercase */
+  --cs-fs-body:    14px;   /* corpo de texto */
+  --cs-fs-caption: 12px;   /* captions e fontes */
+  --cs-fs-micro:   11px;   /* datas, detalhes mínimos */
+  --cs-fs-score:   32px;   /* score em destaque */
+
+  /* ── BORDER RADIUS ── */
+  --cs-r-sm:      4px;
+  --cs-r-btn:     10px;
+  --cs-r-card:    14px;
+  --cs-r-card-lg: 20px;
+  --cs-r-pill:    9999px;
+  --cs-r-phone:   36px;
+
+  /* ── ESPAÇAMENTO ── */
+  --cs-sp-4:   4px;   --cs-sp-8:   8px;
+  --cs-sp-12: 12px;   --cs-sp-16: 16px;
+  --cs-sp-24: 24px;   --cs-sp-32: 32px;
+  --cs-sp-48: 48px;   --cs-sp-64: 64px;
+
+  /* ── MOTION ── */
+  --cs-ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --cs-ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  --cs-dur-fast:   100ms;
+  --cs-dur-base:   200ms;
+  --cs-dur-slow:   360ms;
+
+  /* ── SOMBRAS ── */
+  --cs-shadow-sm:   0 1px 4px rgba(28,26,23,0.06);
+  --cs-shadow-md:   0 4px 16px rgba(28,26,23,0.08);
+  --cs-shadow-lg:   0 16px 48px rgba(28,26,23,0.12);
+  --cs-shadow-mint: 0 4px 14px rgba(46,196,160,0.28);
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --cs-white:          #201E1A;
+  --cs-clay:           #1C1A17;
+  --cs-clay-dark:      #27241F;
+  --cs-text-primary:   #F2EDE6;
+  --cs-text-secondary: #9B9084;
+  --cs-text-muted:     #6B6358;
+  --cs-border-light:   rgba(255,255,255,0.09);
+  --cs-mint-pale:      #0d2e27;
+  --cs-safe-bg:        #071a0f;
+  --cs-risk-bg:        #1a0808;
+  --cs-caution-bg:     #1a1200;
+  --cs-info-bg:        #081426;
+}
+
+/* ── IMPORT DE FONTES ── */
+/* @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap'); */</pre>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:48px 0;border-top:1px solid var(--border-light);margin-top:32px">
+  <div style="font-size:30px;font-weight:400;color:var(--text-primary);font-family:'DM Serif Display',serif;margin-bottom:6px">Cosmind_ — Design System v1.0</div>
+  <div style="font-size:13px;color:var(--text-muted)">20 seções · Junho 2026 · Uso interno · Listra_ × Cosmind</div>
+  <div style="font-size:13px;color:var(--mint-dark);font-weight:500;margin-top:6px;font-style:italic">Consciência sobre o que você coloca na pele.</div>
+</div>
+
+</div>
+</div>
+
+<script>
+const sections=document.querySelectorAll('.section[id]');
+const navLinks=document.querySelectorAll('.ds-nav a');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-80)current=s.id;});
+  navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current);});
+},{passive:true});
+</script>
+</body>
+</html>
